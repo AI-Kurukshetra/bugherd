@@ -1,24 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## BugHerd-like Dashboard (MVP)
+
+This is a **Next.js (App Router) + Supabase** app implementing a BugHerd-style dashboard.
+
+### Features (current)
+
+- **Supabase Auth** (email + password)
+- **Kanban board** (Backlog / Todo / Doing / Done) (in progress)
+- **Add task modal** (in progress)
+- **Browser extension (MVP)** (in progress)
+
+### Tech stack
+
+- **Next.js** (frontend + backend via route handlers)
+- **Supabase** (Auth + Postgres with RLS)
+- **Tailwind CSS**
+- **Vercel** (hosting)
 
 ## Getting Started
 
-First, run the development server:
+### 1) Create a Supabase project and set env vars
+
+Create a project in Supabase, then add a `.env.local`:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+You can copy `.env.example`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 2) Create database schema (tasks table + RLS)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+In Supabase SQL Editor, run:
+
+- `supabase/schema.sql`
+
+### 2b) (Optional) Enable extension screenshots + metadata
+
+If you will use the extension to capture element screenshots, run:
+
+- `supabase/extension_tasks_metadata_and_storage.sql`
+
+### 3) Run locally
+
+```bash
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+## Browser Extension (MVP)
+
+The extension lives in `extension/` and works like a simplified BugHerd sidebar:
+
+- Right-side slider (on any website)
+- **Create task** → hover highlights elements → click element → crops screenshot
+- Opens an **Add task** modal and creates the task in Supabase
+
+### Configure
+
+Edit:
+
+- `extension/config.js`
+
+Set:
+
+- `SUPABASE_URL`
+- `SUPABASE_ANON_KEY`
+
+### Load unpacked (Chrome / Edge)
+
+1. Open Extensions page:
+   - Chrome: `chrome://extensions`
+   - Edge: `edge://extensions`
+2. Enable **Developer mode**
+3. Click **Load unpacked**
+4. Select the `extension/` folder
+
+### Notes
+
+- You must **sign in inside the extension** (it uses Supabase Auth + RLS).
+- The screenshot bucket is `task-screenshots` (created by the SQL above).
 
 ## Learn More
 

@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "BugHerd Dashboard (MVP)",
+  "version": "0.1.6",
+  "description": "Create tasks on any website and sync to your BugHerd-like dashboard.",
+  "permissions": ["storage", "activeTab", "tabs"],
+  "host_permissions": ["<all_urls>", "https://*.supabase.co/*"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["contentScript.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "BugHerd Dashboard"
+  }
+}
+
